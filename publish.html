@@ -2,16 +2,10 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Publish Article - GeoFS News</title>
-
+    <title>Create Article - GeoFS News</title>
 
     <style>
 
@@ -19,119 +13,730 @@
             box-sizing: border-box;
         }
 
-
         body {
             margin: 0;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
-            background: #eef2f6;
-
-            color: #172033;
+            background: #f1f3f6;
+            color: #202122;
+            font-family: Arial, sans-serif;
         }
-
-
-        /* NAVIGATION */
 
         header {
-            background: #101827;
-
+            background: #111827;
             color: white;
+            padding: 18px 25px;
         }
 
-
-        nav {
-            max-width: 1150px;
-
+        .nav {
+            max-width: 1100px;
             margin: auto;
 
-            padding: 18px 20px;
-
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
         }
 
-
         .logo {
-            font-size: 23px;
-
-            font-weight: 800;
+            font-size: 22px;
+            font-weight: bold;
         }
-
 
         .logo span {
-            color: #5da9ff;
+            color: #60a5fa;
         }
 
-
-        nav a {
-            color: #dce5f2;
-
-            text-decoration: none;
-
-            margin-left: 20px;
-
-            font-weight: 600;
-        }
-
-
-        nav a:hover {
+        .nav a {
             color: white;
+            text-decoration: none;
+            margin-left: 20px;
         }
-
-
-        /* PAGE */
 
         .container {
-            max-width: 850px;
-
-            margin: 50px auto;
-
+            max-width: 1100px;
+            margin: 35px auto;
             padding: 0 20px;
         }
 
-
-        .heading {
-            text-align: center;
-
-            margin-bottom: 35px;
+        h1 {
+            font-size: 36px;
         }
 
+        .subtitle {
+            color: #667085;
+        }
 
-        .heading small {
-            color: #3478d4;
+        .editor {
+            background: white;
+            border: 1px solid #c8ccd1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .info {
+            padding: 25px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #a2a9b1;
+            border-radius: 5px;
+
+            font-size: 15px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+
+            padding: 8px;
+
+            background: #f8f9fa;
+            border-top: 1px solid #c8ccd1;
+            border-bottom: 1px solid #c8ccd1;
+        }
+
+        .toolbar button {
+            background: white;
+
+            border: 1px solid #a2a9b1;
+
+            border-radius: 4px;
+
+            padding: 8px 12px;
+
+            cursor: pointer;
+
+            font-weight: bold;
+        }
+
+        .toolbar button:hover {
+            background: #eaecf0;
+        }
+
+        #editor {
+            min-height: 500px;
+
+            padding: 25px;
+
+            outline: none;
+
+            font-size: 17px;
+
+            line-height: 1.7;
+        }
+
+        #editor:focus {
+            box-shadow: inset 0 0 0 2px #36c;
+        }
+
+        #editor table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        #editor th,
+        #editor td {
+            border: 1px solid #a2a9b1;
+            padding: 10px;
+        }
+
+        #editor th {
+            background: #eaecf0;
+        }
+
+        #editor blockquote {
+            border-left: 4px solid #36c;
+            background: #f8f9fa;
+
+            padding: 10px 20px;
+
+            margin: 20px 0;
+        }
+
+        .bottom {
+            margin-top: 20px;
+
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .preview,
+        .publish {
+            padding: 12px 20px;
+
+            border-radius: 6px;
 
             font-weight: bold;
 
-            letter-spacing: 2px;
+            cursor: pointer;
         }
 
-
-        .heading h1 {
-            font-size: 42px;
-
-            margin: 10px 0;
-        }
-
-
-        .heading p {
-            color: #697588;
-
-            font-size: 17px;
-        }
-
-
-        /* FORM */
-
-        .form {
+        .preview {
             background: white;
 
-            padding: 35px;
+            border: 1px solid #a2a9b1;
+        }
 
-            border-radius: 18px;
+        .publish {
+            background: #36c;
+
+            color: white;
+
+            border: none;
+        }
+
+        #previewBox {
+            display: none;
+
+            margin-top: 30px;
+
+            background: white;
+
+            border: 1px solid #c8ccd1;
+
+            border-radius: 8px;
+
+            padding: 30px;
+        }
+
+        footer {
+            margin-top: 60px;
+
+            padding: 30px;
+
+            background: #111827;
+
+            color: #aaa;
+
+            text-align: center;
+        }
+
+        @media(max-width:700px) {
+
+            .info {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .bottom {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="nav">
+
+        <div class="logo">
+            ✈️ <span>GeoFS</span> News
+        </div>
+
+        <div>
+
+            <a href="index.html">
+                Home
+            </a>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<div class="container">
+
+    <h1>
+        Create an article
+    </h1>
+
+    <p class="subtitle">
+        Write a GeoFS News article using the editor.
+    </p>
+
+
+    <div class="editor">
+
+
+        <!-- ARTICLE INFORMATION -->
+
+        <div class="info">
+
+            <div>
+
+                <label>
+                    Article title
+                </label>
+
+                <input
+                    id="title"
+                    type="text"
+                    placeholder="Article title"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Author
+                </label>
+
+                <input
+                    id="author"
+                    type="text"
+                    placeholder="Your name"
+                >
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Category
+                </label>
+
+                <select id="category">
+
+                    <option>News</option>
+
+                    <option>GeoFS Updates</option>
+
+                    <option>Aircraft</option>
+
+                    <option>Community</option>
+
+                    <option>Events</option>
+
+                    <option>Aviation</option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    Cover image URL
+                </label>
+
+                <input
+                    id="image"
+                    type="url"
+                    placeholder="https://..."
+                >
+
+            </div>
+
+        </div>
+
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+            <button onclick="cmd('bold')">
+                B
+            </button>
+
+            <button onclick="cmd('italic')">
+                <i>I</i>
+            </button>
+
+            <button onclick="cmd('underline')">
+                <u>U</u>
+            </button>
+
+
+            <button onclick="heading('h2')">
+                H2
+            </button>
+
+            <button onclick="heading('h3')">
+                H3
+            </button>
+
+
+            <button onclick="cmd('insertUnorderedList')">
+                • List
+            </button>
+
+            <button onclick="cmd('insertOrderedList')">
+                1. List
+            </button>
+
+
+            <button onclick="link()">
+                🔗 Link
+            </button>
+
+            <button onclick="image()">
+                🖼️ Image
+            </button>
+
+
+            <button onclick="table()">
+                📊 Table
+            </button>
+
+
+            <button onclick="quote()">
+                ❝ Quote
+            </button>
+
+
+            <button onclick="cmd('insertHorizontalRule')">
+                ― Line
+            </button>
+
+        </div>
+
+
+
+        <!-- WRITING AREA -->
+
+        <div
+            id="editor"
+            contenteditable="true"
+        >
+
+            <h2>
+                Start your article
+            </h2>
+
+            <p>
+                Write your GeoFS news here...
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- BUTTONS -->
+
+    <div class="bottom">
+
+        <button
+            class="preview"
+            onclick="preview()"
+        >
+            👁 Preview
+        </button>
+
+
+        <button
+            class="publish"
+            onclick="publish()"
+        >
+            ✈️ Publish article
+        </button>
+
+    </div>
+
+
+
+    <!-- PREVIEW -->
+
+    <div id="previewBox">
+
+        <h1 id="previewTitle">
+        </h1>
+
+        <p id="previewAuthor">
+        </p>
+
+        <hr>
+
+        <div id="previewContent">
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<footer>
+
+    GeoFS News · Community Aviation News
+
+</footer>
+
+
+
+<script>
+
+function cmd(command) {
+
+    document.execCommand(
+        command,
+        false,
+        null
+    );
+
+}
+
+
+function heading(type) {
+
+    document.execCommand(
+        "formatBlock",
+        false,
+        type
+    );
+
+}
+
+
+function link() {
+
+    const url = prompt(
+        "Enter the website URL:"
+    );
+
+    if (!url) return;
+
+    document.execCommand(
+        "createLink",
+        false,
+        url
+    );
+
+}
+
+
+function image() {
+
+    const url = prompt(
+        "Enter the image URL:"
+    );
+
+    if (!url) return;
+
+    document.execCommand(
+        "insertImage",
+        false,
+        url
+    );
+
+}
+
+
+function quote() {
+
+    document.execCommand(
+        "formatBlock",
+        false,
+        "blockquote"
+    );
+
+}
+
+
+function table() {
+
+    const rows = parseInt(
+        prompt(
+            "Number of rows:",
+            "3"
+        )
+    );
+
+    const columns = parseInt(
+        prompt(
+            "Number of columns:",
+            "3"
+        )
+    );
+
+
+    if (!rows || !columns) {
+        return;
+    }
+
+
+    let html = "<table>";
+
+
+    html += "<tr>";
+
+    for (
+        let c = 0;
+        c < columns;
+        c++
+    ) {
+
+        html += "<th>Header</th>";
+
+    }
+
+    html += "</tr>";
+
+
+    for (
+        let r = 1;
+        r < rows;
+        r++
+    ) {
+
+        html += "<tr>";
+
+        for (
+            let c = 0;
+            c < columns;
+            c++
+        ) {
+
+            html += "<td>Cell</td>";
+
+        }
+
+        html += "</tr>";
+
+    }
+
+
+    html += "</table>";
+
+
+    document.execCommand(
+        "insertHTML",
+        false,
+        html
+    );
+
+}
+
+
+function preview() {
+
+    const title =
+        document.getElementById(
+            "title"
+        ).value;
+
+
+    const author =
+        document.getElementById(
+            "author"
+        ).value;
+
+
+    const content =
+        document.getElementById(
+            "editor"
+        ).innerHTML;
+
+
+    document.getElementById(
+        "previewTitle"
+    ).textContent =
+        title || "Untitled article";
+
+
+    document.getElementById(
+        "previewAuthor"
+    ).textContent =
+        author
+        ? "By " + author
+        : "By Unknown";
+
+
+    document.getElementById(
+        "previewContent"
+    ).innerHTML =
+        content;
+
+
+    document.getElementById(
+        "previewBox"
+    ).style.display =
+        "block";
+
+}
+
+
+function publish() {
+
+    const title =
+        document.getElementById(
+            "title"
+        ).value;
+
+
+    const author =
+        document.getElementById(
+            "author"
+        ).value;
+
+
+    if (!title) {
+
+        alert(
+            "Please enter an article title."
+        );
+
+        return;
+
+    }
+
+
+    if (!author) {
+
+        alert(
+            "Please enter your name."
+        );
+
+        return;
+
+    }
+
+
+    alert(
+        "Your article is ready to publish!"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
