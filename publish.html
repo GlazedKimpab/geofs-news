@@ -1,5 +1,638 @@
-Your name
-Article title
-Category
-Article text
-[ Publish ]
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Publish Article - GeoFS News</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #eef2f6;
+
+            color: #172033;
+        }
+
+
+        /* NAVIGATION */
+
+        header {
+            background: #101827;
+
+            color: white;
+        }
+
+
+        nav {
+            max-width: 1150px;
+
+            margin: auto;
+
+            padding: 18px 20px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 23px;
+
+            font-weight: 800;
+        }
+
+
+        .logo span {
+            color: #5da9ff;
+        }
+
+
+        nav a {
+            color: #dce5f2;
+
+            text-decoration: none;
+
+            margin-left: 20px;
+
+            font-weight: 600;
+        }
+
+
+        nav a:hover {
+            color: white;
+        }
+
+
+        /* PAGE */
+
+        .container {
+            max-width: 850px;
+
+            margin: 50px auto;
+
+            padding: 0 20px;
+        }
+
+
+        .heading {
+            text-align: center;
+
+            margin-bottom: 35px;
+        }
+
+
+        .heading small {
+            color: #3478d4;
+
+            font-weight: bold;
+
+            letter-spacing: 2px;
+        }
+
+
+        .heading h1 {
+            font-size: 42px;
+
+            margin: 10px 0;
+        }
+
+
+        .heading p {
+            color: #697588;
+
+            font-size: 17px;
+        }
+
+
+        /* FORM */
+
+        .form {
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 18px;
+
+            border: 1px solid #dce2e9;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.04);
+        }
+
+
+        .form-group {
+            margin-bottom: 23px;
+        }
+
+
+        label {
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ccd4df;
+
+            border-radius: 9px;
+
+            font-family: inherit;
+
+            font-size: 15px;
+
+            outline: none;
+
+            background: white;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #3b82f6;
+
+            box-shadow:
+                0 0 0 3px rgba(59,130,246,0.12);
+        }
+
+
+        textarea {
+
+            min-height: 350px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+        }
+
+
+        .help {
+
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 13px;
+
+            color: #8791a0;
+        }
+
+
+        /* BUTTON */
+
+        .publish-button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #3478d4;
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .publish-button:hover {
+
+            background: #2563b8;
+        }
+
+
+        /* NOTICE */
+
+        .notice {
+
+            background: #eef6ff;
+
+            border: 1px solid #c9e0ff;
+
+            color: #315b8c;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+
+            line-height: 1.5;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+
+            margin-top: 70px;
+
+            background: #101827;
+
+            color: #8995a7;
+
+            padding: 30px 20px;
+
+            text-align: center;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            nav {
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+
+            nav a {
+
+                margin: 0 8px;
+            }
+
+
+            .container {
+
+                margin-top: 30px;
+            }
+
+
+            .form {
+
+                padding: 22px;
+            }
+
+
+            .heading h1 {
+
+                font-size: 34px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAVIGATION -->
+
+<header>
+
+    <nav>
+
+        <div class="logo">
+
+            ✈️ <span>GeoFS</span> News
+
+        </div>
+
+
+        <div>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="index.html#latest">
+                Latest
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+
+<!-- PAGE -->
+
+<main class="container">
+
+
+    <div class="heading">
+
+        <small>
+            COMMUNITY PUBLISHING
+        </small>
+
+        <h1>
+            Publish an Article
+        </h1>
+
+        <p>
+            Share your GeoFS news, stories and
+            aviation content with the community.
+        </p>
+
+    </div>
+
+
+
+    <div class="form">
+
+
+        <div class="notice">
+
+            ✈️ <strong>Anyone can publish.</strong>
+
+            Please only post articles related to
+            GeoFS, aviation or the community.
+
+        </div>
+
+
+
+        <form id="articleForm">
+
+
+            <!-- AUTHOR -->
+
+            <div class="form-group">
+
+                <label for="author">
+
+                    Your name
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="author"
+                    placeholder="Example: Alex"
+                    maxlength="50"
+                    required
+                >
+
+
+                <span class="help">
+
+                    This name will appear below your article.
+
+                </span>
+
+            </div>
+
+
+
+            <!-- TITLE -->
+
+            <div class="form-group">
+
+                <label for="title">
+
+                    Article title
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="title"
+                    placeholder="Example: New aircraft arrives in GeoFS!"
+                    maxlength="120"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- CATEGORY -->
+
+            <div class="form-group">
+
+                <label for="category">
+
+                    Category
+
+                </label>
+
+
+                <select id="category">
+
+                    <option>
+                        News
+                    </option>
+
+                    <option>
+                        GeoFS Updates
+                    </option>
+
+                    <option>
+                        Aircraft
+                    </option>
+
+                    <option>
+                        Community
+                    </option>
+
+                    <option>
+                        Events
+                    </option>
+
+                    <option>
+                        Aviation
+                    </option>
+
+                    <option>
+                        Opinion
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- IMAGE -->
+
+            <div class="form-group">
+
+                <label for="image">
+
+                    Cover image URL
+
+                </label>
+
+
+                <input
+                    type="url"
+                    id="image"
+                    placeholder="https://example.com/image.jpg"
+                >
+
+
+                <span class="help">
+
+                    Optional. Paste a direct link to an image.
+
+                </span>
+
+            </div>
+
+
+
+            <!-- ARTICLE -->
+
+            <div class="form-group">
+
+                <label for="content">
+
+                    Your article
+
+                </label>
+
+
+                <textarea
+                    id="content"
+                    placeholder="Write your article here..."
+                    required
+                ></textarea>
+
+
+                <span class="help">
+
+                    Tell the community what happened.
+
+                </span>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="publish-button"
+            >
+
+                ✈️ Publish Article
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+</main>
+
+
+
+<footer>
+
+    © 2026 GeoFS News · Community Aviation News
+
+</footer>
+
+
+
+<script>
+
+    const form =
+        document.getElementById("articleForm");
+
+
+    form.addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+
+        const author =
+            document.getElementById("author").value;
+
+        const title =
+            document.getElementById("title").value;
+
+        const category =
+            document.getElementById("category").value;
+
+        const content =
+            document.getElementById("content").value;
+
+
+        /*
+            For now we just show a message.
+
+            Later we will connect this form
+            to a database so published articles
+            actually appear on the homepage.
+        */
+
+
+        alert(
+            "Thanks " +
+            author +
+            "! Your article \"" +
+            title +
+            "\" is ready to publish."
+        );
+
+
+        console.log({
+            author: author,
+            title: title,
+            category: category,
+            content: content
+        });
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
