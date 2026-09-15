@@ -1,742 +1,1036 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Create Article - GeoFS News</title>
-
-    <style>
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            background: #f1f3f6;
-            color: #202122;
-            font-family: Arial, sans-serif;
-        }
-
-        header {
-            background: #111827;
-            color: white;
-            padding: 18px 25px;
-        }
-
-        .nav {
-            max-width: 1100px;
-            margin: auto;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 22px;
-            font-weight: bold;
-        }
-
-        .logo span {
-            color: #60a5fa;
-        }
-
-        .nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 20px;
-        }
-
-        .container {
-            max-width: 1100px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
-
-        h1 {
-            font-size: 36px;
-        }
-
-        .subtitle {
-            color: #667085;
-        }
-
-        .editor {
-            background: white;
-            border: 1px solid #c8ccd1;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .info {
-            padding: 25px;
-
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 7px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px;
-
-            border: 1px solid #a2a9b1;
-            border-radius: 5px;
-
-            font-size: 15px;
-        }
-
-        .toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-
-            padding: 8px;
-
-            background: #f8f9fa;
-            border-top: 1px solid #c8ccd1;
-            border-bottom: 1px solid #c8ccd1;
-        }
-
-        .toolbar button {
-            background: white;
-
-            border: 1px solid #a2a9b1;
-
-            border-radius: 4px;
-
-            padding: 8px 12px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-        .toolbar button:hover {
-            background: #eaecf0;
-        }
-
-        #editor {
-            min-height: 500px;
-
-            padding: 25px;
-
-            outline: none;
-
-            font-size: 17px;
-
-            line-height: 1.7;
-        }
-
-        #editor:focus {
-            box-shadow: inset 0 0 0 2px #36c;
-        }
-
-        #editor table {
-            border-collapse: collapse;
-            width: 100%;
-            margin: 20px 0;
-        }
-
-        #editor th,
-        #editor td {
-            border: 1px solid #a2a9b1;
-            padding: 10px;
-        }
-
-        #editor th {
-            background: #eaecf0;
-        }
-
-        #editor blockquote {
-            border-left: 4px solid #36c;
-            background: #f8f9fa;
-
-            padding: 10px 20px;
-
-            margin: 20px 0;
-        }
-
-        .bottom {
-            margin-top: 20px;
-
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .preview,
-        .publish {
-            padding: 12px 20px;
-
-            border-radius: 6px;
-
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        .preview {
-            background: white;
-
-            border: 1px solid #a2a9b1;
-        }
-
-        .publish {
-            background: #36c;
-
-            color: white;
-
-            border: none;
-        }
-
-        #previewBox {
-            display: none;
-
-            margin-top: 30px;
-
-            background: white;
-
-            border: 1px solid #c8ccd1;
-
-            border-radius: 8px;
-
-            padding: 30px;
-        }
-
-        footer {
-            margin-top: 60px;
-
-            padding: 30px;
-
-            background: #111827;
-
-            color: #aaa;
-
-            text-align: center;
-        }
-
-        @media(max-width:700px) {
-
-            .info {
-                grid-template-columns: 1fr;
-            }
-
-            .nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .bottom {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-        }
-
-    </style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Publish Article - GeoFS News</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220;
+      color: white;
+    }
+
+    header {
+      background: #111c2e;
+      border-bottom: 1px solid #26344a;
+      padding: 18px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: #cbd5e1;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .logout-button {
+      margin-left: 20px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      background: #dc2626;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .logout-button:hover {
+      background: #b91c1c;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .logged-in {
+      color: #94a3b8;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #111c2e;
+      border: 1px solid #26344a;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      background: #0b1220;
+      border: 1px solid #334155;
+      border-radius: 7px;
+      color: white;
+      font-size: 15px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px;
+      background: #0b1220;
+      border: 1px solid #334155;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .toolbar button {
+      background: #1e293b;
+      color: white;
+      border: 1px solid #475569;
+      border-radius: 5px;
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    .toolbar button:hover {
+      background: #334155;
+    }
+
+    #editor {
+      min-height: 450px;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 0 0 8px 8px;
+      outline: none;
+      line-height: 1.6;
+    }
+
+    #editor img {
+      max-width: 100%;
+    }
+
+    #editor table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    #editor th,
+    #editor td {
+      border: 1px solid #555;
+      padding: 8px;
+      text-align: left;
+    }
+
+    #editor blockquote {
+      border-left: 4px solid #2563eb;
+      padding-left: 15px;
+      color: #555;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .publish-button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 13px 22px;
+      border-radius: 7px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .publish-button:hover {
+      background: #1d4ed8;
+    }
+
+    .preview-button {
+      background: #475569;
+      color: white;
+      border: none;
+      padding: 13px 22px;
+      border-radius: 7px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .preview {
+      display: none;
+    }
+
+    .preview img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    .preview-content {
+      background: white;
+      color: black;
+      padding: 25px;
+      border-radius: 8px;
+    }
+
+    #status {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 7px;
+      display: none;
+    }
+
+    .word-count {
+      color: #94a3b8;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav a {
+        margin: 0 6px;
+      }
+
+      .logout-button {
+        margin-left: 6px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
-
 <header>
 
-    <div class="nav">
+  <div class="logo">
+    ✈ GeoFS News
+  </div>
 
-        <div class="logo">
-            ✈️ <span>GeoFS</span> News
-        </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="index.html#latest">Latest</a>
+    <a href="index.html#about">About</a>
 
-        <div>
-
-            <a href="index.html">
-                Home
-            </a>
-
-        </div>
-
-    </div>
+    <button class="logout-button" onclick="logout()">
+      Log Out
+    </button>
+  </nav>
 
 </header>
 
 
-
 <div class="container">
 
-    <h1>
-        Create an article
-    </h1>
+  <h1>Publish an Article</h1>
 
-    <p class="subtitle">
-        Write a GeoFS News article using the editor.
+  <div class="logged-in">
+    Logged in as:
+    <strong id="userEmail">Checking...</strong>
+  </div>
+
+
+  <!-- ARTICLE INFORMATION -->
+
+  <div class="card">
+
+    <label>Article Title</label>
+
+    <input
+      type="text"
+      id="title"
+      placeholder="Enter your article title..."
+    >
+
+
+    <label>Author</label>
+
+    <input
+      type="text"
+      id="author"
+      placeholder="Your name or username"
+    >
+
+
+    <label>Category</label>
+
+    <select id="category">
+
+      <option value="GeoFS News">
+        GeoFS News
+      </option>
+
+      <option value="Updates">
+        Updates
+      </option>
+
+      <option value="Aircraft">
+        Aircraft
+      </option>
+
+      <option value="Airports">
+        Airports
+      </option>
+
+      <option value="Community">
+        Community
+      </option>
+
+      <option value="Events">
+        Events
+      </option>
+
+      <option value="Guides">
+        Guides
+      </option>
+
+    </select>
+
+
+    <label>Cover Image URL</label>
+
+    <input
+      type="url"
+      id="coverImage"
+      placeholder="https://example.com/image.jpg"
+    >
+
+  </div>
+
+
+  <!-- EDITOR -->
+
+  <div class="card">
+
+    <label>Article</label>
+
+    <div class="toolbar">
+
+      <button onclick="format('bold')">
+        <b>B</b>
+      </button>
+
+      <button onclick="format('italic')">
+        <i>I</i>
+      </button>
+
+      <button onclick="format('underline')">
+        <u>U</u>
+      </button>
+
+      <button onclick="format('formatBlock', 'h2')">
+        H2
+      </button>
+
+      <button onclick="format('formatBlock', 'h3')">
+        H3
+      </button>
+
+      <button onclick="format('insertUnorderedList')">
+        • List
+      </button>
+
+      <button onclick="format('insertOrderedList')">
+        1. List
+      </button>
+
+      <button onclick="addLink()">
+        🔗 Link
+      </button>
+
+      <button onclick="addImage()">
+        🖼 Image
+      </button>
+
+      <button onclick="addTable()">
+        ▦ Table
+      </button>
+
+      <button onclick="addQuote()">
+        ❝ Quote
+      </button>
+
+      <button onclick="format('insertHorizontalRule')">
+        ― Rule
+      </button>
+
+      <button onclick="format('undo')">
+        ↶
+      </button>
+
+      <button onclick="format('redo')">
+        ↷
+      </button>
+
+    </div>
+
+
+    <div
+      id="editor"
+      contenteditable="true"
+    >
+
+      <p>
+        Start writing your article here...
+      </p>
+
+    </div>
+
+    <div class="word-count">
+      Words: <span id="wordCount">0</span>
+    </div>
+
+  </div>
+
+
+  <!-- ACTIONS -->
+
+  <div class="card">
+
+    <div class="actions">
+
+      <button
+        class="publish-button"
+        onclick="publishArticle()"
+      >
+        Publish Article
+      </button>
+
+      <button
+        class="preview-button"
+        onclick="showPreview()"
+      >
+        Preview
+      </button>
+
+    </div>
+
+    <div id="status"></div>
+
+  </div>
+
+
+  <!-- PREVIEW -->
+
+  <div
+    class="card preview"
+    id="preview"
+  >
+
+    <h2>Preview</h2>
+
+    <img
+      id="previewImage"
+      style="display:none;"
+    >
+
+    <h1 id="previewTitle"></h1>
+
+    <p>
+      <strong id="previewAuthor"></strong>
     </p>
 
+    <p id="previewCategory"></p>
 
-    <div class="editor">
+    <div
+      class="preview-content"
+      id="previewContent"
+    ></div>
 
-
-        <!-- ARTICLE INFORMATION -->
-
-        <div class="info">
-
-            <div>
-
-                <label>
-                    Article title
-                </label>
-
-                <input
-                    id="title"
-                    type="text"
-                    placeholder="Article title"
-                >
-
-            </div>
-
-
-            <div>
-
-                <label>
-                    Author
-                </label>
-
-                <input
-                    id="author"
-                    type="text"
-                    placeholder="Your name"
-                >
-
-            </div>
-
-
-            <div>
-
-                <label>
-                    Category
-                </label>
-
-                <select id="category">
-
-                    <option>News</option>
-
-                    <option>GeoFS Updates</option>
-
-                    <option>Aircraft</option>
-
-                    <option>Community</option>
-
-                    <option>Events</option>
-
-                    <option>Aviation</option>
-
-                </select>
-
-            </div>
-
-
-            <div>
-
-                <label>
-                    Cover image URL
-                </label>
-
-                <input
-                    id="image"
-                    type="url"
-                    placeholder="https://..."
-                >
-
-            </div>
-
-        </div>
-
-
-
-        <!-- TOOLBAR -->
-
-        <div class="toolbar">
-
-            <button onclick="cmd('bold')">
-                B
-            </button>
-
-            <button onclick="cmd('italic')">
-                <i>I</i>
-            </button>
-
-            <button onclick="cmd('underline')">
-                <u>U</u>
-            </button>
-
-
-            <button onclick="heading('h2')">
-                H2
-            </button>
-
-            <button onclick="heading('h3')">
-                H3
-            </button>
-
-
-            <button onclick="cmd('insertUnorderedList')">
-                • List
-            </button>
-
-            <button onclick="cmd('insertOrderedList')">
-                1. List
-            </button>
-
-
-            <button onclick="link()">
-                🔗 Link
-            </button>
-
-            <button onclick="image()">
-                🖼️ Image
-            </button>
-
-
-            <button onclick="table()">
-                📊 Table
-            </button>
-
-
-            <button onclick="quote()">
-                ❝ Quote
-            </button>
-
-
-            <button onclick="cmd('insertHorizontalRule')">
-                ― Line
-            </button>
-
-        </div>
-
-
-
-        <!-- WRITING AREA -->
-
-        <div
-            id="editor"
-            contenteditable="true"
-        >
-
-            <h2>
-                Start your article
-            </h2>
-
-            <p>
-                Write your GeoFS news here...
-            </p>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- BUTTONS -->
-
-    <div class="bottom">
-
-        <button
-            class="preview"
-            onclick="preview()"
-        >
-            👁 Preview
-        </button>
-
-
-        <button
-            class="publish"
-            onclick="publish()"
-        >
-            ✈️ Publish article
-        </button>
-
-    </div>
-
-
-
-    <!-- PREVIEW -->
-
-    <div id="previewBox">
-
-        <h1 id="previewTitle">
-        </h1>
-
-        <p id="previewAuthor">
-        </p>
-
-        <hr>
-
-        <div id="previewContent">
-        </div>
-
-    </div>
-
+  </div>
 
 </div>
 
 
-
-<footer>
-
-    GeoFS News · Community Aviation News
-
-</footer>
-
-
-
 <script>
 
-function cmd(command) {
+/* ==================================================
+   SUPABASE
+================================================== */
 
-    document.execCommand(
-        command,
-        false,
-        null
-    );
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
 
-}
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
-
-function heading(type) {
-
-    document.execCommand(
-        "formatBlock",
-        false,
-        type
-    );
-
-}
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 
 
-function link() {
+/* ==================================================
+   CHECK LOGIN
+================================================== */
 
-    const url = prompt(
-        "Enter the website URL:"
-    );
+async function checkLogin() {
 
-    if (!url) return;
+  const { data, error } =
+    await supabaseClient.auth.getSession();
 
-    document.execCommand(
-        "createLink",
-        false,
-        url
-    );
+  if (error) {
 
-}
+    console.error(error);
 
+    window.location.href = "login.html";
 
-function image() {
+    return;
+  }
 
-    const url = prompt(
-        "Enter the image URL:"
-    );
+  if (!data.session) {
 
-    if (!url) return;
+    window.location.href = "login.html";
 
-    document.execCommand(
-        "insertImage",
-        false,
-        url
-    );
+    return;
+  }
+
+  const user = data.session.user;
+
+  document.getElementById("userEmail").textContent =
+    user.email;
 
 }
 
 
-function quote() {
+/* Run login check */
 
-    document.execCommand(
-        "formatBlock",
-        false,
-        "blockquote"
-    );
+checkLogin();
+
+
+/* ==================================================
+   LOG OUT
+================================================== */
+
+async function logout() {
+
+  await supabaseClient.auth.signOut();
+
+  window.location.href = "login.html";
 
 }
 
 
-function table() {
+/* ==================================================
+   EDITOR
+================================================== */
 
-    const rows = parseInt(
-        prompt(
-            "Number of rows:",
-            "3"
-        )
-    );
+function format(command, value = null) {
 
-    const columns = parseInt(
-        prompt(
-            "Number of columns:",
-            "3"
-        )
-    );
+  document.execCommand(
+    command,
+    false,
+    value
+  );
 
+  document.getElementById("editor").focus();
 
-    if (!rows || !columns) {
-        return;
-    }
+}
 
 
-    let html = "<table>";
+/* ==================================================
+   LINK
+================================================== */
+
+function addLink() {
+
+  const url = prompt(
+    "Enter the website URL:"
+  );
+
+  if (!url) return;
+
+  document.execCommand(
+    "createLink",
+    false,
+    url
+  );
+
+}
 
 
-    html += "<tr>";
+/* ==================================================
+   IMAGE
+================================================== */
+
+function addImage() {
+
+  const url = prompt(
+    "Enter image URL:"
+  );
+
+  if (!url) return;
+
+  document.execCommand(
+    "insertImage",
+    false,
+    url
+  );
+
+}
+
+
+/* ==================================================
+   QUOTE
+================================================== */
+
+function addQuote() {
+
+  document.execCommand(
+    "formatBlock",
+    false,
+    "blockquote"
+  );
+
+}
+
+
+/* ==================================================
+   TABLE
+================================================== */
+
+function addTable() {
+
+  const rows = parseInt(
+    prompt("Number of rows:", "3")
+  );
+
+  const columns = parseInt(
+    prompt("Number of columns:", "3")
+  );
+
+  if (
+    isNaN(rows) ||
+    isNaN(columns) ||
+    rows < 1 ||
+    columns < 1
+  ) {
+
+    return;
+
+  }
+
+
+  let table = `
+    <table>
+      <tbody>
+  `;
+
+
+  for (
+    let r = 0;
+    r < rows;
+    r++
+  ) {
+
+    table += "<tr>";
 
     for (
-        let c = 0;
-        c < columns;
-        c++
+      let c = 0;
+      c < columns;
+      c++
     ) {
 
-        html += "<th>Header</th>";
+      if (r === 0) {
+
+        table +=
+          "<th>Header</th>";
+
+      } else {
+
+        table +=
+          "<td>Cell</td>";
+
+      }
 
     }
 
-    html += "</tr>";
+    table += "</tr>";
+
+  }
 
 
-    for (
-        let r = 1;
-        r < rows;
-        r++
-    ) {
+  table += `
+      </tbody>
+    </table>
+    <p><br></p>
+  `;
 
-        html += "<tr>";
 
-        for (
-            let c = 0;
-            c < columns;
-            c++
-        ) {
+  document.execCommand(
+    "insertHTML",
+    false,
+    table
+  );
 
-            html += "<td>Cell</td>";
+}
+
+
+/* ==================================================
+   WORD COUNT
+================================================== */
+
+const editor =
+  document.getElementById("editor");
+
+editor.addEventListener(
+  "input",
+  updateWordCount
+);
+
+
+function updateWordCount() {
+
+  const text =
+    editor.innerText.trim();
+
+  if (!text) {
+
+    document.getElementById(
+      "wordCount"
+    ).textContent = "0";
+
+    return;
+  }
+
+
+  const words =
+    text.split(/\s+/).length;
+
+  document.getElementById(
+    "wordCount"
+  ).textContent = words;
+
+}
+
+
+/* ==================================================
+   PREVIEW
+================================================== */
+
+function showPreview() {
+
+  const title =
+    document.getElementById(
+      "title"
+    ).value;
+
+  const author =
+    document.getElementById(
+      "author"
+    ).value;
+
+  const category =
+    document.getElementById(
+      "category"
+    ).value;
+
+  const cover =
+    document.getElementById(
+      "coverImage"
+    ).value;
+
+  const content =
+    document.getElementById(
+      "editor"
+    ).innerHTML;
+
+
+  document.getElementById(
+    "previewTitle"
+  ).textContent = title;
+
+
+  document.getElementById(
+    "previewAuthor"
+  ).textContent =
+    "By " + author;
+
+
+  document.getElementById(
+    "previewCategory"
+  ).textContent =
+    category;
+
+
+  document.getElementById(
+    "previewContent"
+  ).innerHTML = content;
+
+
+  const image =
+    document.getElementById(
+      "previewImage"
+    );
+
+
+  if (cover) {
+
+    image.src = cover;
+
+    image.style.display =
+      "block";
+
+  } else {
+
+    image.style.display =
+      "none";
+
+  }
+
+
+  document.getElementById(
+    "preview"
+  ).style.display = "block";
+
+
+  window.scrollTo({
+    top:
+      document.getElementById(
+        "preview"
+      ).offsetTop,
+
+    behavior: "smooth"
+  });
+
+}
+
+
+/* ==================================================
+   PUBLISH
+================================================== */
+
+async function publishArticle() {
+
+  const title =
+    document.getElementById(
+      "title"
+    ).value.trim();
+
+  const author =
+    document.getElementById(
+      "author"
+    ).value.trim();
+
+  const category =
+    document.getElementById(
+      "category"
+    ).value;
+
+  const coverImage =
+    document.getElementById(
+      "coverImage"
+    ).value.trim();
+
+  const content =
+    document.getElementById(
+      "editor"
+    ).innerHTML;
+
+
+  if (!title) {
+
+    showStatus(
+      "Please enter an article title.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!author) {
+
+    showStatus(
+      "Please enter an author name.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !content ||
+    content.trim() === ""
+  ) {
+
+    showStatus(
+      "Please write your article.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data: sessionData
+  } =
+    await supabaseClient.auth.getSession();
+
+
+  if (
+    !sessionData.session
+  ) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  showStatus(
+    "Publishing article...",
+    "success"
+  );
+
+
+  /*
+    DATABASE INSERT
+
+    This will work once your
+    Supabase articles table
+    has been created.
+  */
+
+  const { data, error } =
+    await supabaseClient
+      .from("articles")
+      .insert([
+
+        {
+          title: title,
+
+          author: author,
+
+          category: category,
+
+          cover_image:
+            coverImage,
+
+          content: content,
+
+          user_id:
+            sessionData.session.user.id
 
         }
 
-        html += "</tr>";
-
-    }
-
-
-    html += "</table>";
+      ])
+      .select();
 
 
-    document.execCommand(
-        "insertHTML",
-        false,
-        html
+  if (error) {
+
+    console.error(error);
+
+    showStatus(
+      "Could not publish article: " +
+      error.message,
+      "error"
     );
+
+    return;
+
+  }
+
+
+  showStatus(
+    "Article published successfully!",
+    "success"
+  );
+
+
+  setTimeout(() => {
+
+    window.location.href =
+      "index.html";
+
+  }, 1500);
 
 }
 
 
-function preview() {
+/* ==================================================
+   STATUS MESSAGE
+================================================== */
 
-    const title =
-        document.getElementById(
-            "title"
-        ).value;
+function showStatus(
+  text,
+  type
+) {
 
-
-    const author =
-        document.getElementById(
-            "author"
-        ).value;
-
-
-    const content =
-        document.getElementById(
-            "editor"
-        ).innerHTML;
-
-
+  const status =
     document.getElementById(
-        "previewTitle"
-    ).textContent =
-        title || "Untitled article";
-
-
-    document.getElementById(
-        "previewAuthor"
-    ).textContent =
-        author
-        ? "By " + author
-        : "By Unknown";
-
-
-    document.getElementById(
-        "previewContent"
-    ).innerHTML =
-        content;
-
-
-    document.getElementById(
-        "previewBox"
-    ).style.display =
-        "block";
-
-}
-
-
-function publish() {
-
-    const title =
-        document.getElementById(
-            "title"
-        ).value;
-
-
-    const author =
-        document.getElementById(
-            "author"
-        ).value;
-
-
-    if (!title) {
-
-        alert(
-            "Please enter an article title."
-        );
-
-        return;
-
-    }
-
-
-    if (!author) {
-
-        alert(
-            "Please enter your name."
-        );
-
-        return;
-
-    }
-
-
-    alert(
-        "Your article is ready to publish!"
+      "status"
     );
+
+
+  status.textContent = text;
+
+  status.style.display =
+    "block";
+
+
+  if (type === "success") {
+
+    status.style.background =
+      "#14532d";
+
+  } else {
+
+    status.style.background =
+      "#7f1d1d";
+
+  }
 
 }
 
 </script>
 
-
 </body>
-
 </html>
