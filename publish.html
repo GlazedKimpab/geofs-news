@@ -1,560 +1,607 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Publish Article - GeoFS News</title>
+<meta charset="UTF-8">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<title>Publish Article - GeoFS News</title>
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1220;
-      color: white;
-    }
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    header {
-      background: #111c2e;
-      border-bottom: 1px solid #26344a;
-      padding: 18px 30px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+<style>
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    nav a {
-      color: #cbd5e1;
-      text-decoration: none;
-      margin-left: 20px;
-    }
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#0b1220;
+  color:white;
+}
 
-    nav a:hover {
-      color: white;
-    }
+header{
+  background:#111c2e;
+  border-bottom:1px solid #26344a;
+  padding:18px 30px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-    .logout-button {
-      margin-left: 20px;
-      padding: 8px 14px;
-      border: none;
-      border-radius: 6px;
-      background: #dc2626;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
+.logo{
+  font-size:24px;
+  font-weight:bold;
+}
 
-    .logout-button:hover {
-      background: #b91c1c;
-    }
+nav a{
+  color:#cbd5e1;
+  text-decoration:none;
+  margin-left:20px;
+}
 
-    .container {
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+nav a:hover{
+  color:white;
+}
 
-    h1 {
-      font-size: 36px;
-      margin-bottom: 10px;
-    }
+.logout-button{
+  margin-left:20px;
+  padding:8px 14px;
+  border:none;
+  border-radius:6px;
+  background:#dc2626;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
 
-    .logged-in {
-      color: #94a3b8;
-      margin-bottom: 30px;
-    }
+.logout-button:hover{
+  background:#b91c1c;
+}
 
-    .card {
-      background: #111c2e;
-      border: 1px solid #26344a;
-      border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 25px;
-    }
+.container{
+  max-width:1100px;
+  margin:40px auto;
+  padding:0 20px;
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+h1{
+  font-size:36px;
+  margin-bottom:10px;
+}
 
-    input,
-    select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 20px;
-      background: #0b1220;
-      border: 1px solid #334155;
-      border-radius: 7px;
-      color: white;
-      font-size: 15px;
-    }
+.logged-in{
+  color:#94a3b8;
+  margin-bottom:30px;
+}
 
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 10px;
-      background: #0b1220;
-      border: 1px solid #334155;
-      border-bottom: none;
-      border-radius: 8px 8px 0 0;
-    }
+.card{
+  background:#111c2e;
+  border:1px solid #26344a;
+  border-radius:12px;
+  padding:25px;
+  margin-bottom:25px;
+}
 
-    .toolbar button {
-      background: #1e293b;
-      color: white;
-      border: 1px solid #475569;
-      border-radius: 5px;
-      padding: 7px 10px;
-      cursor: pointer;
-    }
+label{
+  display:block;
+  font-weight:bold;
+  margin-bottom:8px;
+}
 
-    .toolbar button:hover {
-      background: #334155;
-    }
+input,select{
+  width:100%;
+  padding:12px;
+  margin-bottom:20px;
+  background:#0b1220;
+  border:1px solid #334155;
+  border-radius:7px;
+  color:white;
+  font-size:15px;
+}
 
-    #editor {
-      min-height: 450px;
-      background: white;
-      color: black;
-      padding: 20px;
-      border-radius: 0 0 8px 8px;
-      outline: none;
-      line-height: 1.6;
-    }
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:10px;
+  background:#0b1220;
+  border:1px solid #334155;
+  border-bottom:none;
+  border-radius:8px 8px 0 0;
+}
 
-    #editor img {
-      max-width: 100%;
-    }
+.toolbar button{
+  background:#1e293b;
+  color:white;
+  border:1px solid #475569;
+  border-radius:5px;
+  padding:7px 10px;
+  cursor:pointer;
+}
 
-    #editor table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 15px 0;
-    }
+.toolbar button:hover{
+  background:#334155;
+}
 
-    #editor th,
-    #editor td {
-      border: 1px solid #555;
-      padding: 8px;
-      text-align: left;
-    }
+#editor{
+  min-height:450px;
+  background:white;
+  color:black;
+  padding:20px;
+  border-radius:0 0 8px 8px;
+  outline:none;
+  line-height:1.6;
+}
 
-    #editor blockquote {
-      border-left: 4px solid #2563eb;
-      padding-left: 15px;
-      color: #555;
-    }
+#editor img{
+  max-width:100%;
+}
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
+#editor table{
+  width:100%;
+  border-collapse:collapse;
+  margin:15px 0;
+}
 
-    .publish-button {
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 13px 22px;
-      border-radius: 7px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+#editor th,
+#editor td{
+  border:1px solid #555;
+  padding:8px;
+  text-align:left;
+}
 
-    .publish-button:hover {
-      background: #1d4ed8;
-    }
+#editor blockquote{
+  border-left:4px solid #2563eb;
+  padding-left:15px;
+  color:#555;
+}
 
-    .preview-button {
-      background: #475569;
-      color: white;
-      border: none;
-      padding: 13px 22px;
-      border-radius: 7px;
-      font-size: 16px;
-      cursor: pointer;
-    }
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
 
-    .preview {
-      display: none;
-    }
+.publish-button,
+.preview-button{
+  padding:13px 22px;
+  border:none;
+  border-radius:7px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .preview img {
-      max-width: 100%;
-      border-radius: 8px;
-    }
+.publish-button{
+  background:#2563eb;
+  color:white;
+}
 
-    .preview-content {
-      background: white;
-      color: black;
-      padding: 25px;
-      border-radius: 8px;
-    }
+.publish-button:hover{
+  background:#1d4ed8;
+}
 
-    #status {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 7px;
-      display: none;
-    }
+.preview-button{
+  background:#475569;
+  color:white;
+}
 
-    .word-count {
-      color: #94a3b8;
-      margin-top: 8px;
-      font-size: 14px;
-    }
+.preview{
+  display:none;
+}
 
-    @media (max-width: 700px) {
+.preview img{
+  max-width:100%;
+  border-radius:8px;
+}
 
-      header {
-        flex-direction: column;
-        gap: 15px;
-      }
+.preview-content{
+  background:white;
+  color:black;
+  padding:25px;
+  border-radius:8px;
+}
 
-      nav a {
-        margin: 0 6px;
-      }
+#status{
+  margin-top:15px;
+  padding:12px;
+  border-radius:7px;
+  display:none;
+}
 
-      .logout-button {
-        margin-left: 6px;
-      }
+.word-count{
+  color:#94a3b8;
+  margin-top:8px;
+  font-size:14px;
+}
 
-      h1 {
-        font-size: 28px;
-      }
-    }
-  </style>
+@media(max-width:700px){
+
+  header{
+    flex-direction:column;
+    gap:15px;
+  }
+
+  nav a{
+    margin:0 6px;
+  }
+
+  .logout-button{
+    margin-left:6px;
+  }
+
+  h1{
+    font-size:28px;
+  }
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header>
 
-  <div class="logo">
-    ✈ GeoFS News
-  </div>
+<div class="logo">
+✈ GeoFS News
+</div>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="index.html#latest">Latest</a>
-    <a href="index.html#about">About</a>
+<nav>
 
-    <button class="logout-button" onclick="logout()">
-      Log Out
-    </button>
-  </nav>
+<a href="index.html">
+Home
+</a>
+
+<a href="index.html#latest">
+Latest
+</a>
+
+<a href="index.html#about">
+About
+</a>
+
+<button
+  class="logout-button"
+  onclick="logout()"
+>
+Log Out
+</button>
+
+</nav>
 
 </header>
 
 
 <div class="container">
 
-  <h1>Publish an Article</h1>
+<h1>
+Publish an Article
+</h1>
 
-  <div class="logged-in">
-    Logged in as:
-    <strong id="userEmail">Checking...</strong>
-  </div>
+<div class="logged-in">
 
+Logged in as:
+<strong id="userEmail">
+Checking...
+</strong>
 
-  <!-- ARTICLE INFORMATION -->
+</div>
 
-  <div class="card">
 
-    <label>Article Title</label>
+<!-- ARTICLE INFORMATION -->
 
-    <input
-      type="text"
-      id="title"
-      placeholder="Enter your article title..."
-    >
+<div class="card">
 
+<label>
+Article Title
+</label>
 
-    <label>Author</label>
+<input
+  type="text"
+  id="title"
+  placeholder="Enter your article title..."
+>
 
-    <input
-      type="text"
-      id="author"
-      placeholder="Your name or username"
-    >
 
+<label>
+Author
+</label>
 
-    <label>Category</label>
+<input
+  type="text"
+  id="author"
+  placeholder="Your name or username"
+>
 
-    <select id="category">
 
-      <option value="GeoFS News">
-        GeoFS News
-      </option>
+<label>
+Category
+</label>
 
-      <option value="Updates">
-        Updates
-      </option>
+<select id="category">
 
-      <option value="Aircraft">
-        Aircraft
-      </option>
+<option value="GeoFS News">
+GeoFS News
+</option>
 
-      <option value="Airports">
-        Airports
-      </option>
+<option value="Updates">
+Updates
+</option>
 
-      <option value="Community">
-        Community
-      </option>
+<option value="Aircraft">
+Aircraft
+</option>
 
-      <option value="Events">
-        Events
-      </option>
+<option value="Airports">
+Airports
+</option>
 
-      <option value="Guides">
-        Guides
-      </option>
+<option value="Community">
+Community
+</option>
 
-    </select>
+<option value="Events">
+Events
+</option>
 
+<option value="Guides">
+Guides
+</option>
 
-    <label>Cover Image URL</label>
+</select>
 
-    <input
-      type="url"
-      id="coverImage"
-      placeholder="https://example.com/image.jpg"
-    >
 
-  </div>
+<label>
+Cover Image URL
+</label>
 
+<input
+  type="url"
+  id="coverImage"
+  placeholder="https://example.com/image.jpg"
+>
 
-  <!-- EDITOR -->
+</div>
 
-  <div class="card">
 
-    <label>Article</label>
+<!-- EDITOR -->
 
-    <div class="toolbar">
+<div class="card">
 
-      <button onclick="format('bold')">
-        <b>B</b>
-      </button>
+<label>
+Article
+</label>
 
-      <button onclick="format('italic')">
-        <i>I</i>
-      </button>
+<div class="toolbar">
 
-      <button onclick="format('underline')">
-        <u>U</u>
-      </button>
+<button onclick="format('bold')">
+<b>B</b>
+</button>
 
-      <button onclick="format('formatBlock', 'h2')">
-        H2
-      </button>
+<button onclick="format('italic')">
+<i>I</i>
+</button>
 
-      <button onclick="format('formatBlock', 'h3')">
-        H3
-      </button>
+<button onclick="format('underline')">
+<u>U</u>
+</button>
 
-      <button onclick="format('insertUnorderedList')">
-        • List
-      </button>
+<button onclick="format('formatBlock','h2')">
+H2
+</button>
 
-      <button onclick="format('insertOrderedList')">
-        1. List
-      </button>
+<button onclick="format('formatBlock','h3')">
+H3
+</button>
 
-      <button onclick="addLink()">
-        🔗 Link
-      </button>
+<button onclick="format('insertUnorderedList')">
+• List
+</button>
 
-      <button onclick="addImage()">
-        🖼 Image
-      </button>
+<button onclick="format('insertOrderedList')">
+1. List
+</button>
 
-      <button onclick="addTable()">
-        ▦ Table
-      </button>
+<button onclick="addLink()">
+🔗 Link
+</button>
 
-      <button onclick="addQuote()">
-        ❝ Quote
-      </button>
+<button onclick="addImage()">
+🖼 Image
+</button>
 
-      <button onclick="format('insertHorizontalRule')">
-        ― Rule
-      </button>
+<button onclick="addTable()">
+▦ Table
+</button>
 
-      <button onclick="format('undo')">
-        ↶
-      </button>
+<button onclick="addQuote()">
+❝ Quote
+</button>
 
-      <button onclick="format('redo')">
-        ↷
-      </button>
+<button onclick="format('insertHorizontalRule')">
+― Rule
+</button>
 
-    </div>
+<button onclick="format('undo')">
+↶
+</button>
 
+<button onclick="format('redo')">
+↷
+</button>
 
-    <div
-      id="editor"
-      contenteditable="true"
-    >
+</div>
 
-      <p>
-        Start writing your article here...
-      </p>
 
-    </div>
+<div
+  id="editor"
+  contenteditable="true"
+>
+<p>
+Start writing your article here...
+</p>
+</div>
 
-    <div class="word-count">
-      Words: <span id="wordCount">0</span>
-    </div>
 
-  </div>
+<div class="word-count">
 
+Words:
+<span id="wordCount">
+0
+</span>
 
-  <!-- ACTIONS -->
+</div>
 
-  <div class="card">
+</div>
 
-    <div class="actions">
 
-      <button
-        class="publish-button"
-        onclick="publishArticle()"
-      >
-        Publish Article
-      </button>
+<!-- ACTIONS -->
 
-      <button
-        class="preview-button"
-        onclick="showPreview()"
-      >
-        Preview
-      </button>
+<div class="card">
 
-    </div>
+<div class="actions">
 
-    <div id="status"></div>
+<button
+  class="publish-button"
+  onclick="publishArticle()"
+>
+Publish Article
+</button>
 
-  </div>
+<button
+  class="preview-button"
+  onclick="showPreview()"
+>
+Preview
+</button>
 
+</div>
 
-  <!-- PREVIEW -->
+<div id="status"></div>
 
-  <div
-    class="card preview"
-    id="preview"
-  >
+</div>
 
-    <h2>Preview</h2>
 
-    <img
-      id="previewImage"
-      style="display:none;"
-    >
+<!-- PREVIEW -->
 
-    <h1 id="previewTitle"></h1>
+<div
+  class="card preview"
+  id="preview"
+>
 
-    <p>
-      <strong id="previewAuthor"></strong>
-    </p>
+<h2>
+Preview
+</h2>
 
-    <p id="previewCategory"></p>
+<img
+  id="previewImage"
+  style="display:none;"
+>
 
-    <div
-      class="preview-content"
-      id="previewContent"
-    ></div>
+<h1 id="previewTitle"></h1>
 
-  </div>
+<p>
+<strong id="previewAuthor"></strong>
+</p>
+
+<p id="previewCategory"></p>
+
+<div
+  class="preview-content"
+  id="previewContent"
+></div>
+
+</div>
 
 </div>
 
 
 <script>
 
-/* ==================================================
+/* =========================================
    SUPABASE
-================================================== */
+========================================= */
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_URL =
+  "YOUR_SUPABASE_URL";
 
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_ANON_KEY =
+  "YOUR_SUPABASE_ANON_KEY";
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
-);
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
 
-/* ==================================================
-   CHECK LOGIN
-================================================== */
+/* =========================================
+   LOGIN PROTECTION
+========================================= */
 
-async function checkLogin() {
+async function checkLogin(){
 
-  const { data, error } =
+  const {data,error} =
     await supabaseClient.auth.getSession();
 
-  if (error) {
+  if(error){
 
     console.error(error);
 
-    window.location.href = "login.html";
+    window.location.href =
+      "login.html";
 
     return;
   }
 
-  if (!data.session) {
+  if(!data.session){
 
-    window.location.href = "login.html";
+    window.location.href =
+      "login.html";
 
     return;
   }
 
-  const user = data.session.user;
-
-  document.getElementById("userEmail").textContent =
-    user.email;
+  document.getElementById(
+    "userEmail"
+  ).textContent =
+    data.session.user.email;
 
 }
-
-
-/* Run login check */
 
 checkLogin();
 
 
-/* ==================================================
-   LOG OUT
-================================================== */
+/* =========================================
+   LOGOUT
+========================================= */
 
-async function logout() {
+async function logout(){
 
   await supabaseClient.auth.signOut();
 
-  window.location.href = "login.html";
+  window.location.href =
+    "login.html";
 
 }
 
 
-/* ==================================================
+/* =========================================
    EDITOR
-================================================== */
+========================================= */
 
-function format(command, value = null) {
+function format(command,value=null){
 
   document.execCommand(
     command,
@@ -562,22 +609,25 @@ function format(command, value = null) {
     value
   );
 
-  document.getElementById("editor").focus();
+  document.getElementById(
+    "editor"
+  ).focus();
 
 }
 
 
-/* ==================================================
+/* =========================================
    LINK
-================================================== */
+========================================= */
 
-function addLink() {
+function addLink(){
 
-  const url = prompt(
-    "Enter the website URL:"
-  );
+  const url =
+    prompt(
+      "Enter the website URL:"
+    );
 
-  if (!url) return;
+  if(!url)return;
 
   document.execCommand(
     "createLink",
@@ -588,17 +638,18 @@ function addLink() {
 }
 
 
-/* ==================================================
+/* =========================================
    IMAGE
-================================================== */
+========================================= */
 
-function addImage() {
+function addImage(){
 
-  const url = prompt(
-    "Enter image URL:"
-  );
+  const url =
+    prompt(
+      "Enter image URL:"
+    );
 
-  if (!url) return;
+  if(!url)return;
 
   document.execCommand(
     "insertImage",
@@ -609,11 +660,11 @@ function addImage() {
 }
 
 
-/* ==================================================
+/* =========================================
    QUOTE
-================================================== */
+========================================= */
 
-function addQuote() {
+function addQuote(){
 
   document.execCommand(
     "formatBlock",
@@ -624,26 +675,34 @@ function addQuote() {
 }
 
 
-/* ==================================================
+/* =========================================
    TABLE
-================================================== */
+========================================= */
 
-function addTable() {
+function addTable(){
 
-  const rows = parseInt(
-    prompt("Number of rows:", "3")
-  );
+  const rows =
+    parseInt(
+      prompt(
+        "Number of rows:",
+        "3"
+      )
+    );
 
-  const columns = parseInt(
-    prompt("Number of columns:", "3")
-  );
+  const columns =
+    parseInt(
+      prompt(
+        "Number of columns:",
+        "3"
+      )
+    );
 
-  if (
+  if(
     isNaN(rows) ||
     isNaN(columns) ||
     rows < 1 ||
     columns < 1
-  ) {
+  ){
 
     return;
 
@@ -651,31 +710,31 @@ function addTable() {
 
 
   let table = `
-    <table>
-      <tbody>
-  `;
+<table>
+<tbody>
+`;
 
 
-  for (
-    let r = 0;
-    r < rows;
+  for(
+    let r=0;
+    r<rows;
     r++
-  ) {
+  ){
 
     table += "<tr>";
 
-    for (
-      let c = 0;
-      c < columns;
+    for(
+      let c=0;
+      c<columns;
       c++
-    ) {
+    ){
 
-      if (r === 0) {
+      if(r===0){
 
         table +=
           "<th>Header</th>";
 
-      } else {
+      }else{
 
         table +=
           "<td>Cell</td>";
@@ -690,10 +749,10 @@ function addTable() {
 
 
   table += `
-      </tbody>
-    </table>
-    <p><br></p>
-  `;
+</tbody>
+</table>
+<p><br></p>
+`;
 
 
   document.execCommand(
@@ -705,12 +764,14 @@ function addTable() {
 }
 
 
-/* ==================================================
+/* =========================================
    WORD COUNT
-================================================== */
+========================================= */
 
 const editor =
-  document.getElementById("editor");
+  document.getElementById(
+    "editor"
+  );
 
 editor.addEventListener(
   "input",
@@ -718,36 +779,35 @@ editor.addEventListener(
 );
 
 
-function updateWordCount() {
+function updateWordCount(){
 
   const text =
     editor.innerText.trim();
 
-  if (!text) {
+  if(!text){
 
     document.getElementById(
       "wordCount"
     ).textContent = "0";
 
     return;
+
   }
 
 
-  const words =
-    text.split(/\s+/).length;
-
   document.getElementById(
     "wordCount"
-  ).textContent = words;
+  ).textContent =
+    text.split(/\s+/).length;
 
 }
 
 
-/* ==================================================
+/* =========================================
    PREVIEW
-================================================== */
+========================================= */
 
-function showPreview() {
+function showPreview(){
 
   const title =
     document.getElementById(
@@ -777,7 +837,8 @@ function showPreview() {
 
   document.getElementById(
     "previewTitle"
-  ).textContent = title;
+  ).textContent =
+    title;
 
 
   document.getElementById(
@@ -794,7 +855,8 @@ function showPreview() {
 
   document.getElementById(
     "previewContent"
-  ).innerHTML = content;
+  ).innerHTML =
+    content;
 
 
   const image =
@@ -803,43 +865,31 @@ function showPreview() {
     );
 
 
-  if (cover) {
+  if(cover){
 
     image.src = cover;
+    image.style.display = "block";
 
-    image.style.display =
-      "block";
+  }else{
 
-  } else {
-
-    image.style.display =
-      "none";
+    image.style.display = "none";
 
   }
 
 
   document.getElementById(
     "preview"
-  ).style.display = "block";
-
-
-  window.scrollTo({
-    top:
-      document.getElementById(
-        "preview"
-      ).offsetTop,
-
-    behavior: "smooth"
-  });
+  ).style.display =
+    "block";
 
 }
 
 
-/* ==================================================
+/* =========================================
    PUBLISH
-================================================== */
+========================================= */
 
-async function publishArticle() {
+async function publishArticle(){
 
   const title =
     document.getElementById(
@@ -867,7 +917,7 @@ async function publishArticle() {
     ).innerHTML;
 
 
-  if (!title) {
+  if(!title){
 
     showStatus(
       "Please enter an article title.",
@@ -879,7 +929,7 @@ async function publishArticle() {
   }
 
 
-  if (!author) {
+  if(!author){
 
     showStatus(
       "Please enter an author name.",
@@ -891,30 +941,13 @@ async function publishArticle() {
   }
 
 
-  if (
-    !content ||
-    content.trim() === ""
-  ) {
-
-    showStatus(
-      "Please write your article.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
   const {
-    data: sessionData
+    data:sessionData
   } =
     await supabaseClient.auth.getSession();
 
 
-  if (
-    !sessionData.session
-  ) {
+  if(!sessionData.session){
 
     window.location.href =
       "login.html";
@@ -930,41 +963,29 @@ async function publishArticle() {
   );
 
 
-  /*
-    DATABASE INSERT
-
-    This will work once your
-    Supabase articles table
-    has been created.
-  */
-
-  const { data, error } =
+  const {data,error} =
     await supabaseClient
       .from("articles")
-      .insert([
+      .insert([{
 
-        {
-          title: title,
+        title:title,
 
-          author: author,
+        author:author,
 
-          category: category,
+        category:category,
 
-          cover_image:
-            coverImage,
+        cover_image:coverImage,
 
-          content: content,
+        content:content,
 
-          user_id:
-            sessionData.session.user.id
+        user_id:
+          sessionData.session.user.id
 
-        }
-
-      ])
+      }])
       .select();
 
 
-  if (error) {
+  if(error){
 
     console.error(error);
 
@@ -985,48 +1006,37 @@ async function publishArticle() {
   );
 
 
-  setTimeout(() => {
+  setTimeout(()=>{
 
     window.location.href =
       "index.html";
 
-  }, 1500);
+  },1500);
 
 }
 
 
-/* ==================================================
-   STATUS MESSAGE
-================================================== */
+/* =========================================
+   STATUS
+========================================= */
 
-function showStatus(
-  text,
-  type
-) {
+function showStatus(text,type){
 
   const status =
     document.getElementById(
       "status"
     );
 
-
-  status.textContent = text;
+  status.textContent =
+    text;
 
   status.style.display =
     "block";
 
-
-  if (type === "success") {
-
-    status.style.background =
-      "#14532d";
-
-  } else {
-
-    status.style.background =
-      "#7f1d1d";
-
-  }
+  status.style.background =
+    type === "success"
+      ? "#14532d"
+      : "#7f1d1d";
 
 }
 
@@ -1034,3 +1044,4 @@ function showStatus(
 
 </body>
 </html>
+```
