@@ -3,290 +3,959 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GeoFS News - Login Test</title>
+
+  <title>Login - GeoFS News</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(
+          rgba(5, 18, 35, 0.88),
+          rgba(5, 18, 35, 0.94)
+        ),
+        url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2000&q=80")
+        center / cover fixed;
+      color: #172033;
+    }
+
+    /* NAVBAR */
+
+    nav {
+      height: 70px;
       background: #071a2d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 7%;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.25);
+    }
+
+    .logo {
       color: white;
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .logo span {
+      color: #35a7ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #dce9f5;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: #35a7ff;
+    }
+
+    /* MAIN */
+
+    main {
+      flex: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      margin: 0;
+      padding: 50px 20px;
     }
 
-    .box {
-      background: white;
-      color: #172033;
-      width: 90%;
-      max-width: 500px;
-      padding: 30px;
-      border-radius: 15px;
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    .status {
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 8px;
-      background: #f1f5f9;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    button {
+    .login-card {
       width: 100%;
-      padding: 13px;
-      margin-top: 15px;
+      max-width: 460px;
+      background: rgba(255,255,255,0.98);
+      border-radius: 18px;
+      padding: 42px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+      font-size: 32px;
+      color: #071a2d;
+      margin-bottom: 10px;
+    }
+
+    .login-header p {
+      color: #667085;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    /* MESSAGES */
+
+    .message {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .message.error {
+      background: #fff0f0;
+      border: 1px solid #ffcaca;
+      color: #c62828;
+    }
+
+    .message.success {
+      background: #edf9f0;
+      border: 1px solid #bce5c5;
+      color: #18752a;
+    }
+
+    /* FORM */
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: #27364a;
+      margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 45px 14px 15px;
+      border: 1px solid #d5dce5;
+      border-radius: 9px;
+      font-size: 15px;
+      outline: none;
+      background: white;
+      transition: 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: #168cff;
+      box-shadow: 0 0 0 3px rgba(22,140,255,0.12);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 18px;
+      color: #667085;
+    }
+
+    /* FORGOT PASSWORD */
+
+    .forgot-password {
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    .forgot-password button {
+      border: none;
+      background: none;
+      color: #168cff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .forgot-password button:hover {
+      text-decoration: underline;
+    }
+
+    /* BUTTON */
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 9px;
       background: #168cff;
       color: white;
-      border: 0;
-      border-radius: 8px;
       font-size: 16px;
+      font-weight: 700;
       cursor: pointer;
+      transition: 0.2s;
     }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 7px;
+    .submit-btn:hover {
+      background: #0878df;
     }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
+    .submit-btn:disabled {
+      background: #8ebde8;
+      cursor: not-allowed;
+    }
+
+    /* MODE SWITCH */
+
+    .mode-switch {
+      text-align: center;
+      margin-top: 25px;
+      color: #667085;
+      font-size: 14px;
+    }
+
+    .mode-switch button {
+      border: none;
+      background: none;
+      color: #0878df;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .mode-switch button:hover {
+      text-decoration: underline;
+    }
+
+    /* FOOTER */
+
+    footer {
+      background: #071a2d;
+      color: #91a4b8;
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        gap: 14px;
+      }
+
+      .nav-links a {
+        font-size: 13px;
+      }
+
+      .login-card {
+        padding: 30px 22px;
+      }
+
+      .login-header h1 {
+        font-size: 27px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        height: auto;
+        padding: 18px 20px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      main {
+        padding: 30px 15px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<div class="box">
+  <!-- NAVBAR -->
 
-  <h1>GeoFS News Login Test</h1>
+  <nav>
 
-  <p>
-    This page is testing the connection between your website
-    and Supabase.
-  </p>
+    <a href="index.html" class="logo">
+      GeoFS <span>News</span>
+    </a>
 
-  <div id="status" class="status">
-    Starting test...
-  </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#latest">Latest</a>
+      <a href="index.html#about">About</a>
+      <a href="publish.html">Publish</a>
+    </div>
 
-  <label>Email</label>
-  <input
-    type="email"
-    id="email"
-    placeholder="your@email.com"
-  >
-
-  <label>Password</label>
-  <input
-    type="password"
-    id="password"
-    placeholder="Password"
-  >
-
-  <button id="testButton">
-    Test Supabase Login
-  </button>
-
-</div>
-
-<script>
-
-  /*
-   ==========================================
-   SUPABASE CONFIG
-   ==========================================
-  */
-
-  const SUPABASE_URL =
-    "https://nqguimrtkvtiunkdlvkw.supabase.co";
-
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_XNCrnb5rGD9rXufLQHXYiQ_kkhWVXUX";
+  </nav>
 
 
-  /*
-   ==========================================
-   CREATE SUPABASE CLIENT
-   ==========================================
-  */
+  <!-- LOGIN / SIGNUP -->
 
-  const supabaseClient =
-    supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_PUBLISHABLE_KEY
-    );
+  <main>
 
+    <div class="login-card">
 
-  const statusBox =
-    document.getElementById("status");
+      <div class="login-header">
 
+        <h1 id="formTitle">
+          Welcome Back
+        </h1>
 
-  /*
-   ==========================================
-   SHOW STATUS
-   ==========================================
-  */
+        <p id="formSubtitle">
+          Log in to your GeoFS News account to publish articles.
+        </p>
 
-  function status(message) {
-
-    statusBox.textContent =
-      message;
-
-  }
+      </div>
 
 
-  /*
-   ==========================================
-   INITIAL TEST
-   ==========================================
-  */
+      <!-- ERROR -->
 
-  async function runInitialTest() {
-
-    status(
-      "Testing Supabase connection..."
-    );
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.getSession();
+      <div
+        id="errorMessage"
+        class="message error"
+      ></div>
 
 
-      if (error) {
+      <!-- SUCCESS -->
 
-        status(
-          "❌ SUPABASE ERROR\n\n" +
-          "Message:\n" +
-          error.message +
-          "\n\n" +
-          "Status:\n" +
-          (error.status || "unknown")
-        );
+      <div
+        id="successMessage"
+        class="message success"
+      ></div>
 
-        return;
+
+      <!-- FORM -->
+
+      <form id="authForm">
+
+        <div class="form-group">
+
+          <label for="email">
+            Email Address
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="password">
+            Password
+          </label>
+
+          <div class="input-wrapper">
+
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              minlength="6"
+              autocomplete="current-password"
+              required
+            >
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Show password"
+            >
+              👁
+            </button>
+
+          </div>
+
+
+          <div
+            class="forgot-password"
+            id="forgotContainer"
+          >
+
+            <button
+              type="button"
+              id="forgotPassword"
+            >
+              Forgot password?
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="submit-btn"
+          id="submitButton"
+        >
+          Log In
+        </button>
+
+      </form>
+
+
+      <!-- LOGIN / SIGNUP SWITCH -->
+
+      <div class="mode-switch">
+
+        <span id="switchText">
+          Don't have an account?
+        </span>
+
+        <button
+          type="button"
+          id="switchMode"
+        >
+          Create one
+        </button>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+    © 2026 GeoFS News. Community aviation news.
+  </footer>
+
+
+  <script>
+
+    /* =========================================
+       SUPABASE
+       ========================================= */
+
+    const SUPABASE_URL =
+      "https://nqguimrtkvtiunkdlvkw.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_XNCrnb5rGD9rXufLQHXYiQ_kkhWVXUX";
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+
+    /* =========================================
+       ELEMENTS
+       ========================================= */
+
+    const authForm =
+      document.getElementById("authForm");
+
+    const emailInput =
+      document.getElementById("email");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const passwordToggle =
+      document.getElementById("passwordToggle");
+
+    const submitButton =
+      document.getElementById("submitButton");
+
+    const switchMode =
+      document.getElementById("switchMode");
+
+    const switchText =
+      document.getElementById("switchText");
+
+    const formTitle =
+      document.getElementById("formTitle");
+
+    const formSubtitle =
+      document.getElementById("formSubtitle");
+
+    const errorMessage =
+      document.getElementById("errorMessage");
+
+    const successMessage =
+      document.getElementById("successMessage");
+
+    const forgotPassword =
+      document.getElementById("forgotPassword");
+
+    const forgotContainer =
+      document.getElementById("forgotContainer");
+
+
+    /* =========================================
+       MODE
+       ========================================= */
+
+    let isLoginMode = true;
+
+
+    function updateFormMode() {
+
+      clearMessages();
+
+      if (isLoginMode) {
+
+        formTitle.textContent =
+          "Welcome Back";
+
+        formSubtitle.textContent =
+          "Log in to your GeoFS News account to publish articles.";
+
+        submitButton.textContent =
+          "Log In";
+
+        switchText.textContent =
+          "Don't have an account?";
+
+        switchMode.textContent =
+          "Create one";
+
+        passwordInput.autocomplete =
+          "current-password";
+
+        forgotContainer.style.display =
+          "block";
+
+      } else {
+
+        formTitle.textContent =
+          "Create Account";
+
+        formSubtitle.textContent =
+          "Create an account to publish articles on GeoFS News.";
+
+        submitButton.textContent =
+          "Create Account";
+
+        switchText.textContent =
+          "Already have an account?";
+
+        switchMode.textContent =
+          "Log in";
+
+        passwordInput.autocomplete =
+          "new-password";
+
+        forgotContainer.style.display =
+          "none";
       }
-
-
-      status(
-        "✅ SUPABASE CONNECTION WORKS!\n\n" +
-        "The website successfully connected to your Supabase project.\n\n" +
-        "Current session:\n" +
-        (data.session
-          ? "Logged in"
-          : "Not logged in")
-      );
-
-
-    } catch (error) {
-
-      status(
-        "❌ JAVASCRIPT ERROR\n\n" +
-        error.message
-      );
 
     }
 
-  }
 
-
-  /*
-   ==========================================
-   LOGIN TEST
-   ==========================================
-  */
-
-  document
-    .getElementById("testButton")
-    .addEventListener(
+    switchMode.addEventListener(
       "click",
-      async function () {
+      function() {
+
+        isLoginMode =
+          !isLoginMode;
+
+        updateFormMode();
+
+      }
+    );
+
+
+    /* =========================================
+       PASSWORD TOGGLE
+       ========================================= */
+
+    passwordToggle.addEventListener(
+      "click",
+      function() {
+
+        if (
+          passwordInput.type === "password"
+        ) {
+
+          passwordInput.type =
+            "text";
+
+          passwordToggle.textContent =
+            "🙈";
+
+        } else {
+
+          passwordInput.type =
+            "password";
+
+          passwordToggle.textContent =
+            "👁";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       MESSAGES
+       ========================================= */
+
+    function clearMessages() {
+
+      errorMessage.style.display =
+        "none";
+
+      successMessage.style.display =
+        "none";
+
+      errorMessage.textContent =
+        "";
+
+      successMessage.textContent =
+        "";
+
+    }
+
+
+    function showError(message) {
+
+      successMessage.style.display =
+        "none";
+
+      errorMessage.textContent =
+        message;
+
+      errorMessage.style.display =
+        "block";
+
+    }
+
+
+    function showSuccess(message) {
+
+      errorMessage.style.display =
+        "none";
+
+      successMessage.textContent =
+        message;
+
+      successMessage.style.display =
+        "block";
+
+    }
+
+
+    /* =========================================
+       LOGIN / SIGNUP
+       ========================================= */
+
+    authForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+        clearMessages();
 
         const email =
-          document
-            .getElementById("email")
-            .value
-            .trim();
+          emailInput.value.trim();
 
         const password =
-          document
-            .getElementById("password")
-            .value;
+          passwordInput.value;
 
 
-        if (!email || !password) {
+        if (
+          !email.includes("@") ||
+          !email.includes(".")
+        ) {
 
-          status(
-            "Please enter an email and password."
+          showError(
+            "Please enter a valid email address."
           );
 
           return;
+
         }
 
 
-        status(
-          "Attempting login..."
-        );
+        if (password.length < 6) {
+
+          showError(
+            "Password must be at least 6 characters."
+          );
+
+          return;
+
+        }
+
+
+        submitButton.disabled =
+          true;
+
+
+        submitButton.textContent =
+          isLoginMode
+            ? "Logging in..."
+            : "Creating account...";
+
+
+        try {
+
+          /* LOGIN */
+
+          if (isLoginMode) {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.auth
+                .signInWithPassword({
+                  email: email,
+                  password: password
+                });
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            if (data.session) {
+
+              showSuccess(
+                "Login successful! Redirecting..."
+              );
+
+              setTimeout(
+                function() {
+
+                  window.location.href =
+                    "publish.html";
+
+                },
+                800
+              );
+
+            }
+
+          }
+
+
+          /* SIGNUP */
+
+          else {
+
+            const {
+              data,
+              error
+            } =
+              await supabaseClient.auth
+                .signUp({
+                  email: email,
+                  password: password
+                });
+
+
+            if (error) {
+              throw error;
+            }
+
+
+            if (data.session) {
+
+              showSuccess(
+                "Account created! Redirecting..."
+              );
+
+              setTimeout(
+                function() {
+
+                  window.location.href =
+                    "publish.html";
+
+                },
+                800
+              );
+
+            } else {
+
+              showSuccess(
+                "Account created! Check your email to confirm your account."
+              );
+
+              authForm.reset();
+
+            }
+
+          }
+
+
+        } catch (error) {
+
+          console.error(
+            "Authentication error:",
+            error
+          );
+
+
+          let message =
+            error.message ||
+            "Something went wrong. Please try again.";
+
+
+          if (
+            message
+              .toLowerCase()
+              .includes(
+                "invalid login credentials"
+              )
+          ) {
+
+            message =
+              "Incorrect email or password.";
+
+          }
+
+
+          else if (
+            message
+              .toLowerCase()
+              .includes(
+                "user already registered"
+              )
+          ) {
+
+            message =
+              "An account with this email already exists. Try logging in.";
+
+          }
+
+
+          else if (
+            message
+              .toLowerCase()
+              .includes(
+                "password should be at least"
+              )
+          ) {
+
+            message =
+              "Your password must be at least 6 characters.";
+
+          }
+
+
+          showError(message);
+
+        }
+
+
+        finally {
+
+          submitButton.disabled =
+            false;
+
+          submitButton.textContent =
+            isLoginMode
+              ? "Log In"
+              : "Create Account";
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       FORGOT PASSWORD
+       ========================================= */
+
+    forgotPassword.addEventListener(
+      "click",
+      async function() {
+
+        clearMessages();
+
+        const email =
+          emailInput.value.trim();
+
+
+        if (
+          !email.includes("@") ||
+          !email.includes(".")
+        ) {
+
+          showError(
+            "Enter your email address first."
+          );
+
+          emailInput.focus();
+
+          return;
+
+        }
 
 
         try {
 
           const {
-            data,
             error
           } =
             await supabaseClient.auth
-              .signInWithPassword({
-                email: email,
-                password: password
-              });
+              .resetPasswordForEmail(
+                email,
+                {
+                  redirectTo:
+                    window.location.origin +
+                    window.location.pathname
+                }
+              );
 
 
           if (error) {
-
-            status(
-              "❌ LOGIN ERROR\n\n" +
-              "Message:\n" +
-              error.message +
-              "\n\n" +
-              "Status:\n" +
-              (error.status || "unknown")
-            );
-
-            return;
+            throw error;
           }
 
 
-          status(
-            "✅ LOGIN WORKED!\n\n" +
-            "You are successfully authenticated with Supabase."
+          showSuccess(
+            "Password reset email sent. Check your inbox."
           );
-
 
         } catch (error) {
 
-          status(
-            "❌ JAVASCRIPT ERROR\n\n" +
-            error.message
+          showError(
+            error.message ||
+            "Unable to send password reset email."
           );
 
         }
@@ -295,15 +964,62 @@
     );
 
 
-  /*
-   ==========================================
-   START
-   ==========================================
-  */
+    /* =========================================
+       EXISTING SESSION
+       ========================================= */
 
-  runInitialTest();
+    async function checkExistingSession() {
 
-</script>
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth
+            .getSession();
+
+
+        if (error) {
+
+          console.error(error);
+
+          return;
+
+        }
+
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          window.location.href =
+            "publish.html";
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Session check error:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =========================================
+       START
+       ========================================= */
+
+    updateFormMode();
+
+    checkExistingSession();
+
+  </script>
 
 </body>
 </html>
