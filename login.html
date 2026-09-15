@@ -39,7 +39,9 @@ body{
   margin-bottom:8px;
 }
 
-.logo span{color:#60a5fa}
+.logo span{
+  color:#60a5fa;
+}
 
 .subtitle{
   text-align:center;
@@ -118,7 +120,9 @@ input:focus{
   cursor:pointer;
 }
 
-.main-button:hover{background:#1d4ed8}
+.main-button:hover{
+  background:#1d4ed8;
+}
 
 .main-button:disabled{
   background:#475569;
@@ -173,7 +177,9 @@ input:focus{
   text-decoration:none;
 }
 
-.back-home a:hover{color:white}
+.back-home a:hover{
+  color:white;
+}
 
 .terms{
   text-align:center;
@@ -181,6 +187,16 @@ input:focus{
   font-size:12px;
   line-height:1.5;
   margin-top:25px;
+}
+
+@media(max-width:500px){
+  .login-box{
+    padding:25px 20px;
+  }
+
+  .logo{
+    font-size:27px;
+  }
 }
 </style>
 </head>
@@ -204,6 +220,7 @@ input:focus{
   <form id="authForm">
 
     <div class="form-group">
+
       <label for="email">Email</label>
 
       <input
@@ -213,6 +230,7 @@ input:focus{
         autocomplete="email"
         required
       >
+
     </div>
 
     <div class="form-group">
@@ -280,14 +298,15 @@ input:focus{
 
 </div>
 
+
 <script>
 
 /* =========================================
-   SUPABASE
+   SUPABASE CONFIGURATION
 ========================================= */
 
 const SUPABASE_URL =
-  "YOUR_SUPABASE_URL";
+  "https://nqguimrtkvtiunkdlvkw.supabase.co";
 
 const SUPABASE_ANON_KEY =
   "sb_publishable_i_RES7i2yApm8Dq3wZAwdw_VxzAGbdz";
@@ -353,13 +372,14 @@ async function checkExistingLogin(){
   if(data.session){
     window.location.href = "publish.html";
   }
+
 }
 
 checkExistingLogin();
 
 
 /* =========================================
-   SHOW PASSWORD
+   SHOW / HIDE PASSWORD
 ========================================= */
 
 showPassword.addEventListener("click",()=>{
@@ -435,7 +455,7 @@ switchButton.addEventListener("click",()=>{
 
 
 /* =========================================
-   FORM
+   FORM SUBMISSION
 ========================================= */
 
 form.addEventListener("submit",async(event)=>{
@@ -456,17 +476,24 @@ form.addEventListener("submit",async(event)=>{
     );
 
     return;
+
   }
 
   setLoading(true);
 
   if(signupMode){
 
-    await createAccount(email,password);
+    await createAccount(
+      email,
+      password
+    );
 
   }else{
 
-    await login(email,password);
+    await login(
+      email,
+      password
+    );
 
   }
 
@@ -477,7 +504,10 @@ form.addEventListener("submit",async(event)=>{
    CREATE ACCOUNT
 ========================================= */
 
-async function createAccount(email,password){
+async function createAccount(
+  email,
+  password
+){
 
   const {data,error} =
     await supabaseClient.auth.signUp({
@@ -495,8 +525,10 @@ async function createAccount(email,password){
     );
 
     setLoading(false);
+
     return;
   }
+
 
   if(data.session){
 
@@ -506,8 +538,10 @@ async function createAccount(email,password){
     );
 
     setTimeout(()=>{
+
       window.location.href =
         "publish.html";
+
     },800);
 
   }else{
@@ -518,6 +552,7 @@ async function createAccount(email,password){
     );
 
     setLoading(false);
+
   }
 
 }
@@ -527,7 +562,10 @@ async function createAccount(email,password){
    LOGIN
 ========================================= */
 
-async function login(email,password){
+async function login(
+  email,
+  password
+){
 
   const {data,error} =
     await supabaseClient.auth.signInWithPassword({
@@ -545,8 +583,10 @@ async function login(email,password){
     );
 
     setLoading(false);
+
     return;
   }
+
 
   if(data.session){
 
@@ -556,8 +596,10 @@ async function login(email,password){
     );
 
     setTimeout(()=>{
+
       window.location.href =
         "publish.html";
+
     },700);
 
   }
@@ -566,7 +608,7 @@ async function login(email,password){
 
 
 /* =========================================
-   LOADING
+   LOADING STATE
 ========================================= */
 
 function setLoading(loading){
@@ -597,19 +639,33 @@ function setLoading(loading){
    MESSAGES
 ========================================= */
 
-function showMessage(text,type){
+function showMessage(
+  text,
+  type
+){
 
-  message.textContent = text;
-  message.className = type;
-  message.style.display = "block";
+  message.textContent =
+    text;
+
+  message.className =
+    type;
+
+  message.style.display =
+    "block";
 
 }
 
+
 function clearMessage(){
 
-  message.textContent = "";
-  message.className = "";
-  message.style.display = "none";
+  message.textContent =
+    "";
+
+  message.className =
+    "";
+
+  message.style.display =
+    "none";
 
 }
 
