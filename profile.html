@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Profile | GeoFS News</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+
+    nav {
+      background: #071a33;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .logo {
+      font-size: 23px;
+    }
+
+    .logo span {
+      color: #4da3ff;
+    }
+
+    .container {
+      width: min(900px, 92%);
+      margin: 45px auto;
+    }
+
+    .profile-card {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #dbeafe;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    .username {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .bio {
+      color: #667085;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 15px auto;
+    }
+
+    .joined {
+      color: #8793a3;
+      font-size: 14px;
+    }
+
+    .edit-button {
+      display: inline-block;
+      margin-top: 25px;
+      background: #168cff;
+      color: white;
+      text-decoration: none;
+      padding: 11px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .articles {
+      margin-top: 30px;
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+    }
+
+    .articles h2 {
+      margin-top: 0;
+    }
+
+    .article {
+      padding: 15px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .article:last-child {
+      border-bottom: none;
+    }
+
+    .article a {
+      color: #1269a5;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .loading {
+      text-align: center;
+      color: #667085;
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <a class="logo" href="index.html">
+    ✈️ GeoFS <span>News</span>
+  </a>
+
+  <a href="index.html">
+    Home
+  </a>
+</nav>
+
+<div class="container">
+
+  <div class="profile-card">
+
+    <img
+      id="avatar"
+      class="avatar"
+      src="https://ui-avatars.com/api/?name=User&background=dbeafe&color=172033"
+      alt="Profile picture"
+    >
+
+    <h1 id="username" class="username">
+      Loading...
+    </h1>
+
+    <p id="bio" class="bio"></p>
+
+    <p id="joined" class="joined"></p>
+
+    <a
+      id="editButton"
+      class="edit-button"
+      href="edit-profile.html"
+      style="display:none;"
+    >
+      Edit Profile
+    </a>
+
+  </div>
+
+
+  <div class="articles">
+
+    <h2>Articles</h2>
+
+    <div id="articles">
+      <p class="loading">
+        Loading articles...
+      </p>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://nqguimrtkvtiunkdlvkw.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_XNCrnb5rGD9rXufLQHXYiQ_kkhWVXUX";
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const profileId =
+  params.get("id");
+
+
+async function loadProfile() {
+
+  if (!profileId) {
+
+    document.getElementById("username")
+      .textContent = "Profile not found";
+
+    return;
+  }
+
+
+  const {
+    data: profile,
+    error
+  } =
+    await supabaseClient
+      .from("profiles")
+      .select("*")
+      .eq("id", profileId)
+      .single();
+
+
+  if (error) {
+
+    console.error(error);
+
+    document.getElementById("username")
+      .textContent = "Profile not found";
+
+    return;
+  }
+
+
+  document.getElementById("username")
+    .textContent =
+      "@" + profile.username;
+
+
+  document.getElementById("bio")
+    .textContent =
+      profile.bio || "No bio yet.";
+
+
+  if (profile.avatar_url) {
+
+    document.getElementById("avatar")
+      .src =
+        profile.avatar_url;
+
+  }
+
+
+  const joined =
+    new Date(
+      profile.created_at
+    );
+
+  document.getElementById("joined")
+    .textContent =
+      "Joined " +
+      joined.toLocaleDateString();
+
+
+  const {
+    data: sessionData
+  } =
+    await supabaseClient.auth
+      .getSession();
+
+
+  if (
+    sessionData.session &&
+    sessionData.session.user.id === profile.id
+  ) {
+
+    document.getElementById("editButton")
+      .style.display =
+        "inline-block";
+
+  }
+
+}
+
+
+loadProfile();
+
+</script>
+
+</body>
+</html>
