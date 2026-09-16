@@ -1,626 +1,164 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>GeoFS News</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #eef2f6;
-            color: #172033;
-        }
-
-        /* NAVBAR */
-
-        header {
-            background: #101827;
-            color: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav {
-            max-width: 1150px;
-            margin: auto;
-            padding: 18px 20px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: 800;
-        }
-
-        .logo span {
-            color: #5da9ff;
-        }
-
-        nav a {
-            color: #dce5f2;
-            text-decoration: none;
-            margin-left: 25px;
-            font-weight: 600;
-        }
-
-        nav a:hover {
-            color: white;
-        }
-
-        .publish {
-            background: #3b82f6;
-            color: white !important;
-            padding: 10px 16px;
-            border-radius: 8px;
-        }
-
-        /* HERO */
-
-        .hero {
-            max-width: 1150px;
-            margin: 35px auto;
-            padding: 60px 45px;
-
-            border-radius: 22px;
-
-            background:
-                linear-gradient(
-                    rgba(10, 24, 42, 0.78),
-                    rgba(10, 24, 42, 0.88)
-                ),
-                url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80");
-
-            background-size: cover;
-            background-position: center;
-
-            color: white;
-        }
-
-        .hero small {
-            color: #8fc4ff;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .hero h1 {
-            font-size: clamp(38px, 6vw, 70px);
-            margin: 12px 0;
-            line-height: 1;
-        }
-
-        .hero p {
-            max-width: 650px;
-            color: #d6deea;
-            font-size: 18px;
-        }
-
-        .hero-button {
-            display: inline-block;
-            margin-top: 15px;
-
-            padding: 13px 20px;
-
-            background: #3b82f6;
-            color: white;
-
-            border-radius: 8px;
-
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .hero-button:hover {
-            background: #2563eb;
-        }
-
-        /* MAIN */
-
-        main {
-            max-width: 1150px;
-            margin: auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            margin: 45px 0 20px;
-        }
-
-        .section-title h2 {
-            margin: 0;
-            font-size: 28px;
-        }
-
-        .section-title a {
-            color: #3478d4;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* FEATURED ARTICLE */
-
-        .featured {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-
-            display: grid;
-            grid-template-columns: 1.3fr 1fr;
-
-            border: 1px solid #dce2e9;
-        }
-
-        .featured img {
-            width: 100%;
-            height: 100%;
-            min-height: 300px;
-            object-fit: cover;
-        }
-
-        .featured-content {
-            padding: 35px;
-        }
-
-        .tag {
-            display: inline-block;
-
-            background: #e8f1ff;
-            color: #3478d4;
-
-            padding: 5px 9px;
-
-            border-radius: 20px;
-
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .featured h2 {
-            font-size: 32px;
-            margin: 15px 0 10px;
-        }
-
-        .featured p {
-            color: #647084;
-            line-height: 1.7;
-        }
-
-        .read-more {
-            display: inline-block;
-            margin-top: 15px;
-
-            color: #3478d4;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        /* ARTICLES */
-
-        .articles {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .article {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-
-            border: 1px solid #dce2e9;
-
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .article:hover {
-            transform: translateY(-4px);
-
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.08);
-        }
-
-        .article img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-
-        .article-content {
-            padding: 20px;
-        }
-
-        .article h3 {
-            margin: 10px 0;
-            font-size: 20px;
-        }
-
-        .article p {
-            color: #687487;
-            line-height: 1.6;
-        }
-
-        .article a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .article-date {
-            font-size: 13px;
-            color: #8993a2;
-        }
-
-        /* ABOUT */
-
-        .about {
-            margin: 55px 0;
-
-            background: #172337;
-            color: white;
-
-            padding: 35px;
-
-            border-radius: 16px;
-        }
-
-        .about h2 {
-            margin-top: 0;
-        }
-
-        .about p {
-            color: #cbd5e1;
-            max-width: 750px;
-        }
-
-        /* FOOTER */
-
-        footer {
-            margin-top: 60px;
-
-            background: #101827;
-            color: #8995a7;
-
-            padding: 30px 20px;
-        }
-
-        .footer-inner {
-            max-width: 1150px;
-            margin: auto;
-
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 800px) {
-
-            nav {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            nav a {
-                margin: 0 8px;
-            }
-
-            .hero {
-                margin: 20px;
-                padding: 40px 25px;
-            }
-
-            .featured {
-                grid-template-columns: 1fr;
-            }
-
-            .featured img {
-                height: 230px;
-            }
-
-            .articles {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-inner {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GeoFS News</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Login button added to the existing navigation */
+
+    .login-link {
+      display: inline-block;
+      margin-left: 10px;
+      padding: 9px 16px;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white !important;
+      text-decoration: none;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+
+    .login-link:hover {
+      background: #1d4ed8;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .nav-actions {
+        gap: 4px;
+      }
+
+      .publish-link {
+        display: none;
+      }
+
+      .login-link {
+        margin-left: 0;
+        padding: 8px 13px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
-<!-- NAVIGATION -->
+  <!-- HEADER -->
 
-<header>
+  <header class="topbar">
 
-    <nav>
+    <div class="wrap nav">
 
-        <div class="logo">
-            <span>GeoFS</span> News
-        </div>
+      <a class="brand" href="index.html">
+        ✈️ GeoFS News
+      </a>
 
-        <div>
+      <div class="nav-actions">
 
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="#latest">
-                Latest
-            </a>
-
-            <a href="#about">
-                About
-            </a>
-
-            <a class="publish" href="publish.html">
-                Publish
-            </a>
-
-        </div>
-
-    </nav>
-
-</header>
-
-
-<!-- HERO -->
-
-<section class="hero">
-
-    <small>THE GEOFS COMMUNITY NEWSROOM</small>
-
-    <h1>
-        Aviation news<br>
-        from the community.
-    </h1>
-
-    <p>
-        Discover the latest GeoFS news, aircraft,
-        updates, events and stories from pilots
-        around the world.
-    </p>
-
-    <a class="hero-button" href="publish.html">
-        Publish an article
-    </a>
-
-</section>
-
-
-<main>
-
-
-    <!-- FEATURED -->
-
-    <div class="section-title">
-
-        <h2>
-            Featured
-        </h2>
-
-    </div>
-
-
-    <section class="featured">
-
-        <img
-            src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1200&q=80"
-            alt="Airplane flying"
+        <a
+          class="publish-link"
+          href="publish.html"
         >
+          Publish an article
+        </a>
 
-        <div class="featured-content">
+        <a
+          class="login-link"
+          href="login.html"
+        >
+          Login
+        </a>
 
-            <span class="tag">
-                FEATURED
-            </span>
+      </div>
 
-            <h2>
-                Welcome to GeoFS News
-            </h2>
+    </div>
 
-            <p>
-                Welcome to the community's new place
-                for GeoFS aviation news. Here you can
-                read and publish stories about flights,
-                aircraft, events and everything happening
-                in the GeoFS community.
-            </p>
+  </header>
 
-            <p class="article-date">
-                September 15, 2026 · GeoFS News
-            </p>
 
-            <a class="read-more" href="#">
-                Read article →
-            </a>
+  <!-- MAIN -->
 
-        </div>
+  <main class="wrap">
+
+    <section class="hero">
+
+      <p class="eyebrow">
+        THE COMMUNITY AVIATION NEWSROOM
+      </p>
+
+      <h1>
+        What's happening in GeoFS?
+      </h1>
+
+      <p>
+        News, updates, aircraft, events and stories
+        written by the GeoFS community.
+      </p>
+
+      <a
+        class="button"
+        href="publish.html"
+      >
+        Write an article →
+      </a>
 
     </section>
 
 
+    <!-- LATEST ARTICLES -->
 
-    <!-- LATEST -->
+    <div class="section-head">
 
-    <div class="section-title" id="latest">
+      <h2>
+        Latest articles
+      </h2>
 
-        <h2>
-            Latest News
-        </h2>
-
-        <a href="#">
-            View all →
-        </a>
+      <input
+        id="search"
+        type="search"
+        placeholder="Search articles…"
+      >
 
     </div>
 
 
-    <section class="articles">
-
-
-        <!-- ARTICLE 1 -->
-
-        <article class="article">
-
-            <img
-                src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80"
-                alt="Commercial airplane"
-            >
-
-            <div class="article-content">
-
-                <span class="tag">
-                    NEWS
-                </span>
-
-                <h3>
-                    What's happening in GeoFS?
-                </h3>
-
-                <p>
-                    The latest stories and news
-                    from the GeoFS community.
-                </p>
-
-                <div class="article-date">
-                    September 15, 2026
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- ARTICLE 2 -->
-
-        <article class="article">
-
-            <img
-                src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=800&q=80"
-                alt="Aircraft cockpit"
-            >
-
-            <div class="article-content">
-
-                <span class="tag">
-                    COMMUNITY
-                </span>
-
-                <h3>
-                    GeoFS Pilots Around the World
-                </h3>
-
-                <p>
-                    Meet the pilots and aviation
-                    communities flying together.
-                </p>
-
-                <div class="article-date">
-                    September 14, 2026
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- ARTICLE 3 -->
-
-        <article class="article">
-
-            <img
-                src="https://images.unsplash.com/photo-1556388158-158ea5ccacbd?auto=format&fit=crop&w=800&q=80"
-                alt="Airplane wing"
-            >
-
-            <div class="article-content">
-
-                <span class="tag">
-                    AVIATION
-                </span>
-
-                <h3>
-                    Aviation Stories
-                </h3>
-
-                <p>
-                    Interesting aviation stories
-                    shared by the community.
-                </p>
-
-                <div class="article-date">
-                    September 13, 2026
-                </div>
-
-            </div>
-
-        </article>
-
-
+    <section
+      id="articles"
+      class="grid"
+    >
+      <p class="muted">
+        Loading articles…
+      </p>
     </section>
 
+  </main>
 
 
-    <!-- ABOUT -->
+  <!-- FOOTER -->
 
-    <section class="about" id="about">
-
-        <h2>
-            About GeoFS News
-        </h2>
-
-        <p>
-            GeoFS News is a community-driven website
-            where pilots can share news, stories,
-            events, aircraft information and other
-            aviation content.
-        </p>
-
-        <a class="hero-button" href="publish.html">
-            Publish your story
-        </a>
-
-    </section>
-
-
-</main>
-
-
-<!-- FOOTER -->
-
-<footer>
-
-    <div class="footer-inner">
-
-        <div>
-            © 2026 GeoFS News
-        </div>
-
-        <div>
-            Community aviation news
-        </div>
-
+  <footer>
+    <div class="wrap">
+      GeoFS News — a community project.
     </div>
+  </footer>
 
-</footer>
 
+  <!-- SCRIPTS -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="config.js"></script>
+
+  <script src="app.js"></script>
 
 </body>
 </html>
